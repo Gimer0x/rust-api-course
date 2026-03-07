@@ -7,7 +7,8 @@ mod db;
 
 
 pub struct AppState {
-    db: Mutex<sqlx::MySqlPool>
+    db: Mutex<sqlx::MySqlPool>,
+    jwt_secret: String,
 }
 
 #[actix_web::main]
@@ -19,7 +20,8 @@ async fn main() -> std::io::Result<()> {
             sqlx::MySqlPool::connect(&std::env::var("DATABASE_URL").unwrap())
             .await
             .unwrap()
-        )
+        ),
+        jwt_secret: std::env::var("JWT_SECRET").unwrap(),
     });
     HttpServer::new(move || App::new()
         .app_data(state.clone())
