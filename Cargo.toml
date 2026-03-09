@@ -6,8 +6,8 @@ edition = "2024"
 [dependencies]
 actix-web = "4.13.0"
 bcrypt = "0.19.0"
-bigdecimal = "0.4.10"
-chrono = "0.4.44"
+bigdecimal = { version = "0.4.10", features = ["serde"] }
+chrono = { version = "0.4.44", features = ["serde"] }
 dotenvy = "0.15.7"
 jsonwebtoken = { version = "10.3.0", features = ["rust_crypto"] }
 rust_decimal = "1.40.0"
