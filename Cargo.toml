@@ -4,6 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+actix-cors = "0.7.1"
+actix-extensible-rate-limit = "0.4.0"
 actix-web = "4.13.0"
 bcrypt = "0.19.0"
 bigdecimal = { version = "0.4.10", features = ["serde"] }

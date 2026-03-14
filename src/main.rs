@@ -1,6 +1,12 @@
 use actix_web::{App, HttpServer, middleware::from_fn, web};
 use dotenvy::dotenv;
 use tokio::sync::Mutex;
+use actix_extensible_rate_limit::{
+    backend::{memory::InMemoryBackend, SimpleInputFunctionBuilder},
+    RateLimiter,
+};
+use std::time::Duration;
+use actix_cors::Cors;
 
 mod controllers;
 mod db;
@@ -25,8 +31,21 @@ async fn main() -> std::io::Result<()> {
         jwt_secret: std::env::var("JWT_SECRET").unwrap(),
     });
 
+    let rate_limiter = InMemoryBackend::builder().build();
+
     HttpServer::new(move || {
-        App::new()
+            App::new()
+            .wrap(Cors::permissive())
+            .wrap(
+                RateLimiter::builder(
+                    rate_limiter.clone(),
+                    SimpleInputFunctionBuilder::new(Duration::from_secs(60), 50)
+                        .real_ip_key()
+                        .build(),
+                )
+                .add_headers()
+                .build(),
+            )
             .app_data(state.clone())
             .service(controllers::auth::sign_up)
             .service(controllers::auth::sign_in)
