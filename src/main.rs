@@ -40,6 +40,11 @@ async fn main() -> std::io::Result<()> {
                     .service(controllers::products::product_show)
                     .service(controllers::products::product_update)
                     .service(controllers::products::product_delete)
+                    .service(controllers::sells::sell_index)
+                    .service(controllers::sells::sell_create)
+                    .service(controllers::sells::sell_show)
+                    .service(controllers::sells::sell_update)
+                    .service(controllers::sells::sell_delete)
             )
     })
     .bind(("127.0.0.1", 8080))?

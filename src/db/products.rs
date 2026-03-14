@@ -60,9 +60,9 @@ pub async fn update_product(db: &sqlx::MySqlPool, id: u64, product: &UpdateProdu
     .unwrap();
 }
 
-pub async fn delete_product(db: &sqlx::MySqlPool, id: u64) -> bool {
+pub async fn delete_product(db: &sqlx::MySqlPool, id: u64) {
     sqlx::query!("DELETE FROM products WHERE id = ?", id)
         .execute(db)
         .await
-        .is_ok()
+        .unwrap();
 }
